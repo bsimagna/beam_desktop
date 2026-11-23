@@ -41,6 +41,9 @@ whether the beam is strong and stiff enough.
   - Allowed values: downward or upward
   - Default: downward
   - Positive sign convention: downward loads are positive; upward loads are negative
+- Deflection limit:
+  - Control: positive numeric input in inches
+  - Default: span / 30 inches, following the current deflection criterion
 
 ## Calculations
 - Units:
@@ -74,6 +77,27 @@ whether the beam is strong and stiff enough.
 ## Outputs
 - The beam with its loads, and the three diagrams
 - Pass or fail for bending and deflection
+- File menu with Save and Open commands for beam design files
+- Export results button that writes a CSV table with x-position, shear, moment, and deflection along the beam
+- Calculation sheet button that saves a printable PDF with inputs, governing checks, and beam diagrams
+
+## Save and Open
+- Save the support type, span, section, deflection limit, load direction, point loads, and uniform loads to a human-readable JSON file.
+- Open a saved JSON file and restore all saved inputs.
+- Include a format version and reject unsupported versions or invalid fields with a clear error.
+- Validate a complete file before applying any values; an invalid file must leave the current design unchanged.
+- Save validates the current design before writing. Canceling either file dialog leaves the current design unchanged.
+
+## Export results
+- Export a comma-separated CSV file suitable for opening in Excel.
+- Include columns for x-position in ft, shear V in kip, moment M in kip-ft, and deflection in inches.
+- Export the same calculated beam positions used for the result diagrams, including load positions and boundaries.
+- If inputs are invalid or the export is canceled, do not write a results file.
+
+## Calculation sheet
+- Export a landscape, printable PDF containing the current beam inputs at the top, including support, span, section, load direction, deflection limit, and all point and uniform loads.
+- Include the governing reactions, bending stress and allowable, maximum deflection and limit, pass/fail outcomes, and beam/load, shear, moment, and deflection diagrams.
+- Use the current valid analysis. If inputs are invalid or the export is canceled, do not create a calculation sheet.
 
 ## Look and feel
 Clean and professional, with an example beam loaded when it opens.
@@ -100,12 +124,37 @@ Check:
 - No real calculations or controls claim to be functional yet.
 
 ### Stage 2: Input controls and validation
-Add support radio buttons, span input, repeatable point-load entries, uniform-load controls, and the steel/lumber preset dropdown. Apply the ranges and defaults in the spec.
+Add support radio buttons, span input, repeatable point-load entries, uniform-load controls, the steel/lumber preset dropdown, and deflection limit input. Apply the ranges and defaults in the spec.
 
 Check:
 - Defaults match the spec.
 - Invalid, blank, out-of-range, and impossible load positions show clear errors.
 - Adding/removing loads works and changing span does not leave loads outside the beam.
+- The deflection limit must be positive and is expressed in inches.
+
+### Stage 2a: Save and Open
+Add File menu commands to save a versioned JSON design and restore it from a validated file.
+
+Check:
+- Saving and reopening preserves both support types, span, section, deflection limit, direction, and multiple point and uniform loads.
+- Malformed JSON, unsupported versions, invalid sections, and out-of-range values show an error without changing the current design.
+- Canceling Save or Open leaves the current design unchanged.
+
+### Stage 2b: Export results
+Add a button that exports the calculated x, V, M, and deflection arrays to CSV.
+
+Check:
+- The CSV opens in Excel and includes unit-bearing column headings.
+- Every exported row has aligned position, shear, moment, and deflection values from the current analysis.
+- Invalid inputs prevent export and display a clear message.
+
+### Stage 2c: Calculation sheet PDF
+Add a button that creates a printable PDF of the current inputs, governing checks, and diagrams.
+
+Check:
+- The PDF shows all inputs and numeric pass/fail checks above the four diagrams.
+- The PDF is landscape and prints on a standard page without clipping its labels.
+- Invalid inputs prevent export and display a clear message.
 
 ### Stage 3: Beam drawing, reactions, shear, and moment
 Draw the beam and loads dynamically. Calculate reactions and piecewise shear and moment for simply supported and cantilever beams.

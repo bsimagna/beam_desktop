@@ -24,7 +24,7 @@ SECTIONS = {
 }
 
 
-def analyze(span, support, point_loads, uniform_loads, section_name, direction="Downward", samples=1201):
+def analyze(span, support, point_loads, uniform_loads, section_name, direction="Downward", samples=1201, deflection_limit=None):
     """Return equilibrium, sampled diagrams and checks. Loads are entered as positive magnitudes."""
     if span <= 0 or support not in ("Simply supported", "Cantilever"):
         raise ValueError("Invalid span or support type")
@@ -84,7 +84,7 @@ def analyze(span, support, point_loads, uniform_loads, section_name, direction="
     ishear = int(np.argmax(np.abs(shear)))
     max_moment = abs(float(moment[imom]))
     stress = max_moment*12/sec.Sx
-    limit = span/30 # Per spec: L/30 in inches, L expressed in feet.
+    limit = span/30 if deflection_limit is None else float(deflection_limit)
     return {
         "x": x, "shear": shear, "moment": moment, "deflection": deflection,
         "RA": ra, "RB": rb, "fixed_moment": fixed_moment, "section": sec,
