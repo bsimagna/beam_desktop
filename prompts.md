@@ -34,3 +34,11 @@
 - Asked: Rerun the validation cases in `spec.md` and confirm they still pass.
 - Changed: Ran the two numerical validation cases, temporarily adding W18x35 in memory for its statics check; no project code or section data was changed.
 - Worked: Both passed. W12x26 case: 10/10-kip reactions, 50.0 kip-ft maximum moment, 0.60852-in deflection (rounds to 0.609). Partial uniform-load case: 22.5/7.5-kip reactions and 126.5625 kip-ft at 11.25 ft (rounds to 126.6). Automated checks were executed.
+## 2026-11-23
+- Asked: Write a short README explaining the app, packages to install, and startup command.
+- Changed: Replaced `README.md` with a concise description plus `python -m pip install numpy matplotlib` and `python app.py` instructions.
+- Worked: README updated. No tests were needed for this documentation change.
+## 2026-11-23
+- Asked: Add equations to `README.md` and make it look like a textbook.
+- Changed: Reworked the README into a compact technical reference with conventions, equilibrium, shear/moment, Euler–Bernoulli deflection, stress and deflection checks, plus install/run instructions.
+- Worked: Documentation updated. No tests were needed for this README change.
